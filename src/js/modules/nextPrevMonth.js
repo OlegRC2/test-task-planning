@@ -46,7 +46,7 @@ export default function nextPrevMonth(nextSelector, prevSelector, calendarTitle,
 
     prev.addEventListener('click', () => {
         if (startMonth <= 1) {
-            startMonth = 1;
+            startMonth = 12;
         } else {
             startMonth--;
         }
