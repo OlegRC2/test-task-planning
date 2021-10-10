@@ -1,0 +1,19 @@
+.worker {
+    width: 438px;
+    height: 143px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    position: absolute;
+    top: 189px;
+    right: 0;
+    &__title {
+        font-weight: bold;
+        font-size: 22px;
+        margin-top: 22px;
+        margin-left: 32px;
+    }
+    &__select-form {
+        margin-top: 22px;
+        margin-left: 32px;
+    }
+}

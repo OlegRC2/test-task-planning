@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.min.css">
+    <title>Calendar</title>
+</head>
+<body>
+    <div class="container">
+
+        <div class="menu">
+            <div class="menuItem">Главная</div>
+            <div class="menuArrow"></div>
+            <div class="menuItem">Сервисы</div>
+            <div class="menuArrow"></div>
+            <div class="menuItem activeColor">Планирование</div>
+        </div>
+
+        <h1>Планирование</h1>
+
+        <section class="calendar">
+            <div class="calendar__wrapper">
+
+                <div class="calendar__header">Июнь 2021</div>
+
+                <div class="calendar__button-wrapper">
+                    <div class="calendar__circle">
+                        <div class="calendar__arrow arrow-prev"></div>
+                    </div>
+                    <div class="calendar__circle">
+                        <div class="calendar__arrow arrow-next"></div>
+                    </div>
+                </div>
+
+                <div class="calendar__line line"></div>
+
+                <div id="calendar"></div>
+            </div>
+        </section>
+
+        <section class="worker">
+            <div class="worker-wrapper">
+                <div class="worker__title">Сотрудник</div>
+                <form action="#" class="worker__select-form">
+                    <select id="sel_id" name="sel_name" class="worker__select">
+                        <option value="1">Select</option>
+                        <option value="6">Алексей Лечащий</option> 
+                        <option value="13">Андрей Кузнецов</option> 
+                        <option value="14">Михаил Попов</option>                   
+                    </select>
+                </form>
+            </div>
+        </section>
+
+        <section class="info">
+            <div class="info__wrapper">
+                <div class="info__trip-wrapper">
+                    <div class="info__trip-counter trip-counter">4</div>
+                    <div class="info__trip-title">поездки</div>
+                </div>
+                
+                <div class="info__line line"></div>
+
+                <div class="info__trip-wrapper day-wrapper">
+                    <div class="info__trip-counter day-counter">9</div>
+                    <div class="info__trip-title">дней коммандировки</div>
+                </div>
+                
+            </div>
+        </section>
+        
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

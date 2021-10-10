@@ -1,0 +1,17 @@
+@import 'libs/bootstrap-reboot.min';
+
+body {
+    background: #E5E5E5;
+}
+.container {
+    width: 1374px;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+@import 'blocks/menu';
+@import 'blocks/calendar';
+@import 'blocks/worker';
+@import 'blocks/info';
+

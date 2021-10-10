@@ -1,0 +1,104 @@
+.calendar {
+    width: 906px;
+    height: 654px;
+    background: #fff;
+    border-radius: 7px;
+    margin-top: 39px;
+    position: relative;
+    &__wrapper {
+        padding-top: 19px;
+        position: relative;
+    }
+    &__header {
+        font-size: 32px;
+        font-weight: bold;
+        color: #002033;
+        margin-left: 26px;
+        display: inline;
+    }
+    &__button-wrapper {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 25px;
+        right: 27px;
+    }
+    &__circle {
+        width: 35px;
+        height: 35px;
+        background: rgba(0, 66, 105, 0.07);
+        border-radius: 50%;
+        margin-right: 5px;
+        cursor: pointer;
+        &:hover {
+            background: rgba(0, 120, 210, 1);
+            .calendar__arrow {
+                border-top: 2px solid #FFF;
+                border-right: 2px solid #FFF;
+            }
+        }
+    }
+    &__arrow {
+        width: 10px;
+        height: 10px;
+        border-top: 2px solid rgba(0, 57, 92, 0.8);
+        border-right: 2px solid rgba(0, 57, 92, 0.8);
+        margin-left: 50%;
+        margin-top: 50%;
+        transform: translateY(-50%) translateX(-60%) rotate(45deg);
+    }
+}
+.line {
+    height: 2px;
+    background: rgba(0, 65, 102, 0.2);
+    opacity: 0.3;
+    margin-top: 14px;
+    margin-right: 27px;
+    margin-left: 26px;
+}
+.arrow-prev {
+    transform: translateY(-50%) translateX(-33%) rotate(225deg);
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 33px;
+    margin-left: 26px;
+    margin-right: 27px;
+}
+td, th {
+    border: 1px solid #E9E9E9;
+    padding: 7px;
+    text-align: right;
+    vertical-align: top;
+    width: 122px;
+    height: 90px;
+    background: #FFF;
+    font-size: 16px;
+}
+th {
+    font-weight: bold;
+    background-color: #E6E6E6;
+}
+.nameOfDay {
+    text-align: left;
+    background-color: white;
+    border: none;
+    height: 20px;
+    font-size: 12px;
+}
+.grayDay {
+    color: #C0C3CC;
+}
+.dayOff {
+    width: 72px;
+    height: 24px;
+    background: #97B2C4;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+    color: #FAFAFA;
+    line-height: 22px;
+    margin-top: 36px;
+    margin-left: 46px;
+}

@@ -1,0 +1,29 @@
+.info {
+    width: 438px;
+    height: 166px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    position: absolute;
+    top: 343px;
+    right: 0;
+    &__trip-wrapper {
+        display: flex;
+        justify-content: space-between;
+        padding-left: 30px;
+        padding-right: 36px;
+        margin-top: 48px;
+    }
+    &__trip-counter {
+        font-size: 32px;
+    }
+    &__trip-title {
+        font-size: 16px;
+        margin-top: 12px;
+    }
+    &__line {
+        margin-top: 8px;
+    }
+}
+.day-wrapper {
+    margin-top: 1px;
+}

@@ -1,0 +1,29 @@
+.menu {
+    display: flex;
+    flex-direction: row;
+    margin-top: 39px;
+}
+.menuItem {
+    display: inline;
+    font-size: 18px;
+    color: rgba(0, 32, 51, 0.6);
+    cursor: pointer;
+}
+.menuArrow {
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    border-top: 3px solid rgba(0, 32, 51, 0.3);
+    border-right: 3px solid rgba(0, 32, 51, 0.3);
+    margin-top: 9px;
+    margin-right: 16px;
+    margin-left: 16px;
+}
+.activeColor {
+    color: #000;
+}
+h1 {
+    font-size: 72px;
+    color: rgba(0, 32, 51, 1);
+    margin-top: 15px;
+}
