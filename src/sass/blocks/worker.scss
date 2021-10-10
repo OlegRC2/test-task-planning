@@ -6,14 +6,74 @@
     position: absolute;
     top: 189px;
     right: 0;
+    z-index: 100;
     &__title {
         font-weight: bold;
         font-size: 22px;
         margin-top: 22px;
         margin-left: 32px;
+        margin-bottom: 21px;
     }
     &__select-form {
         margin-top: 22px;
         margin-left: 32px;
     }
+}
+
+.select {
+    width: 375px;
+    height: 48px;
+    margin: 0 auto;
+    position: relative;
+    &__header {
+        height: 48px;
+        display: flex;
+        border: 1px solid rgba(0, 66, 105, 0.28);;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    &__current {
+        font-size: 18px;
+        line-height: 25px;
+	    padding: 8px;
+        padding-left: 10px;
+        color: #002033;
+    }
+    &__user-img {
+        border-radius: 50%;
+        margin-right: 7px;
+    }
+    &__icon {
+        height: 48px;
+        width: 48px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        flex-shrink: 0;
+        margin-left: auto;
+        border-left: 1px solid rgba(0, 66, 105, 0.28);;
+    }
+    &__body {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        border: 1px solid rgba(0, 66, 105, 0.28);;
+        border-top: 0;
+        display: none;
+        background-color: #FFFFFF;
+    }
+    &__item {
+        cursor: pointer;
+	    font-size: 16px;
+	    line-height: 24px;
+	    padding: 8px;
+        &:hover {
+            background-color: #f2f2f2;
+        }
+    }
+}
+.select-active {
+    display: block;
 }

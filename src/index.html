@@ -23,13 +23,13 @@
         <section class="calendar">
             <div class="calendar__wrapper">
 
-                <div class="calendar__header">Июнь 2021</div>
+                <div class="calendar__header" data-month="0">Июнь 2021</div>
 
                 <div class="calendar__button-wrapper">
-                    <div class="calendar__circle">
+                    <div class="calendar__circle prev">
                         <div class="calendar__arrow arrow-prev"></div>
                     </div>
-                    <div class="calendar__circle">
+                    <div class="calendar__circle next">
                         <div class="calendar__arrow arrow-next"></div>
                     </div>
                 </div>
@@ -43,8 +43,33 @@
         <section class="worker">
             <div class="worker-wrapper">
                 <div class="worker__title">Сотрудник</div>
-                <form action="#" class="worker__select-form">
-                </form>
+
+                <div class="select">
+                    <div class="select__header">
+                        <div class="select__current">
+                            Выберете сотрудника
+                        </div>
+                        <div class="select__icon">
+                            <img src="./icons/IconSelect.png" alt="arrow">
+                        </div>
+                    </div>
+                    
+                    <div class="select__body">
+                        <div class="select__item">
+                            <img src="./icons/userImg.png" alt="user-img" class="select__user-img">
+                            Value 1
+                        </div>
+                        <div class="select__item">
+                            <img src="./icons/userImg.png" alt="user-img" class="select__user-img">
+                            Value 2
+                        </div>
+                        <div class="select__item">
+                            <img src="./icons/userImg.png" alt="user-img" class="select__user-img">
+                            Value 3
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 

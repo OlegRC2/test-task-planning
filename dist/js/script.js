@@ -154,6 +154,30 @@ module.exports = function (argument) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/array-for-each.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/internals/array-for-each.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $forEach = __webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js/internals/array-iteration.js").forEach;
+var arrayMethodIsStrict = __webpack_require__(/*! ../internals/array-method-is-strict */ "./node_modules/core-js/internals/array-method-is-strict.js");
+
+var STRICT_METHOD = arrayMethodIsStrict('forEach');
+
+// `Array.prototype.forEach` method implementation
+// https://tc39.es/ecma262/#sec-array.prototype.foreach
+module.exports = !STRICT_METHOD ? function forEach(callbackfn /* , thisArg */) {
+  return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+// eslint-disable-next-line es/no-array-prototype-foreach -- safe
+} : [].forEach;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/array-includes.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/internals/array-includes.js ***!
@@ -304,6 +328,28 @@ module.exports = function (METHOD_NAME) {
       return { foo: 1 };
     };
     return array[METHOD_NAME](Boolean).foo !== 1;
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/array-method-is-strict.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/core-js/internals/array-method-is-strict.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+
+module.exports = function (METHOD_NAME, argument) {
+  var method = [][METHOD_NAME];
+  return !!method && fails(function () {
+    // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
+    method.call(null, argument || function () { throw 1; }, 1);
   });
 };
 
@@ -562,6 +608,70 @@ var EXISTS = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
   return EXISTS ? document.createElement(it) : {};
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/dom-iterables.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/dom-iterables.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// iterable DOM collections
+// flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+module.exports = {
+  CSSRuleList: 0,
+  CSSStyleDeclaration: 0,
+  CSSValueList: 0,
+  ClientRectList: 0,
+  DOMRectList: 0,
+  DOMStringList: 0,
+  DOMTokenList: 1,
+  DataTransferItemList: 0,
+  FileList: 0,
+  HTMLAllCollection: 0,
+  HTMLCollection: 0,
+  HTMLFormElement: 0,
+  HTMLSelectElement: 0,
+  MediaList: 0,
+  MimeTypeArray: 0,
+  NamedNodeMap: 0,
+  NodeList: 1,
+  PaintRequestList: 0,
+  Plugin: 0,
+  PluginArray: 0,
+  SVGLengthList: 0,
+  SVGNumberList: 0,
+  SVGPathSegList: 0,
+  SVGPointList: 0,
+  SVGStringList: 0,
+  SVGTransformList: 0,
+  SourceBufferList: 0,
+  StyleSheetList: 0,
+  TextTrackCueList: 0,
+  TextTrackList: 0,
+  TouchList: 0
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/dom-token-list-prototype.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/core-js/internals/dom-token-list-prototype.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// in old WebKit versions, `element.classList` is not an instance of global `DOMTokenList`
+var documentCreateElement = __webpack_require__(/*! ../internals/document-create-element */ "./node_modules/core-js/internals/document-create-element.js");
+
+var classList = documentCreateElement('span').classList;
+var DOMTokenListPrototype = classList && classList.constructor && classList.constructor.prototype;
+
+module.exports = DOMTokenListPrototype === Object.prototype ? undefined : DOMTokenListPrototype;
 
 
 /***/ }),
@@ -2229,6 +2339,39 @@ $({ target: 'String', proto: true, forced: !correctIsRegExpLogic('includes') }, 
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/web.dom-collections.for-each.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/core-js/modules/web.dom-collections.for-each.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var DOMIterables = __webpack_require__(/*! ../internals/dom-iterables */ "./node_modules/core-js/internals/dom-iterables.js");
+var DOMTokenListPrototype = __webpack_require__(/*! ../internals/dom-token-list-prototype */ "./node_modules/core-js/internals/dom-token-list-prototype.js");
+var forEach = __webpack_require__(/*! ../internals/array-for-each */ "./node_modules/core-js/internals/array-for-each.js");
+var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
+
+var handlePrototype = function (CollectionPrototype) {
+  // some Chrome versions have non-configurable methods on DOMTokenList
+  if (CollectionPrototype && CollectionPrototype.forEach !== forEach) try {
+    createNonEnumerableProperty(CollectionPrototype, 'forEach', forEach);
+  } catch (error) {
+    CollectionPrototype.forEach = forEach;
+  }
+};
+
+for (var COLLECTION_NAME in DOMIterables) {
+  if (DOMIterables[COLLECTION_NAME]) {
+    handlePrototype(global[COLLECTION_NAME] && global[COLLECTION_NAME].prototype);
+  }
+}
+
+handlePrototype(DOMTokenListPrototype);
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -2318,30 +2461,6 @@ var cityColor = {
   'Казань': '#794355'
 };
 
-
-/***/ }),
-
-/***/ "./src/js/modules/changeSelectValue.js":
-/*!*********************************************!*\
-  !*** ./src/js/modules/changeSelectValue.js ***!
-  \*********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return changeSelectValue; });
-/* harmony import */ var _createCalendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createCalendar */ "./src/js/modules/createCalendar.js");
-/* harmony import */ var _countTrips__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./countTrips */ "./src/js/modules/countTrips.js");
-
-
-function changeSelectValue(selectSelector) {
-  var select = document.querySelector(selectSelector);
-  select.addEventListener('change', function () {
-    Object(_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(2021, 6, select.value);
-    Object(_countTrips__WEBPACK_IMPORTED_MODULE_1__["default"])(select.value);
-  });
-}
 
 /***/ }),
 
@@ -2513,16 +2632,165 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../db */ "./src/js/db.js");
 
 
-function createSelectValue(formSelector) {
-  var form = document.querySelector(formSelector);
+function createSelectValue(selectSelector) {
+  var styledSelectBody = document.querySelector(selectSelector);
   var selectOptions = '';
 
   for (var key in _db__WEBPACK_IMPORTED_MODULE_1__["workers"]) {
-    selectOptions += "<option value=\"".concat(key, "\">").concat(_db__WEBPACK_IMPORTED_MODULE_1__["workers"][key], "</option>");
+    selectOptions += "\n            <div class=\"select__item\" data-value=\"".concat(key, "\">\n                <img src=\"./icons/userImg.png\" alt=\"user-img\" class=\"select__user-img\">\n                ").concat(_db__WEBPACK_IMPORTED_MODULE_1__["workers"][key], "\n            </div>\n        ");
   }
 
-  var select = "\n        <select id=\"sel_id\" name=\"sel_name\" class=\"worker__select\">\n            <option value=1>Select</option>\n            ".concat(selectOptions, "              \n        </select>\n    ");
-  form.innerHTML = select;
+  styledSelectBody.innerHTML = selectOptions;
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/nextPrevMonth.js":
+/*!*****************************************!*\
+  !*** ./src/js/modules/nextPrevMonth.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return nextPrevMonth; });
+/* harmony import */ var _createCalendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createCalendar */ "./src/js/modules/createCalendar.js");
+
+function nextPrevMonth(nextSelector, prevSelector, calendarTitle, startMonth) {
+  var next = document.querySelector(nextSelector),
+      prev = document.querySelector(prevSelector),
+      title = document.querySelector(calendarTitle),
+      selectCurrent = document.querySelector('.select__current');
+  title.setAttribute('data-month', startMonth);
+  nameMonth(startMonth);
+
+  function nameMonth(startMonth) {
+    switch (startMonth) {
+      case 1:
+        title.innerText = 'Январь 2021';
+        break;
+
+      case 2:
+        title.innerText = 'Февраль 2021';
+        break;
+
+      case 3:
+        title.innerText = 'Март 2021';
+        break;
+
+      case 4:
+        title.innerText = 'Апрель 2021';
+        break;
+
+      case 5:
+        title.innerText = 'Май 2021';
+        break;
+
+      case 6:
+        title.innerText = 'Июнь 2021';
+        break;
+
+      case 7:
+        title.innerText = 'Июль 2021';
+        break;
+
+      case 8:
+        title.innerText = 'Август 2021';
+        break;
+
+      case 9:
+        title.innerText = 'Сентябрь 2021';
+        break;
+
+      case 10:
+        title.innerText = 'Октябрь 2021';
+        break;
+
+      case 11:
+        title.innerText = 'Ноябрь 2021';
+        break;
+
+      case 12:
+        title.innerText = 'Декабрь 2021';
+        break;
+    }
+
+    title.setAttribute('data-month', startMonth);
+  }
+
+  next.addEventListener('click', function () {
+    if (startMonth >= 12) {
+      startMonth = 1;
+    } else {
+      startMonth++;
+    }
+
+    nameMonth(startMonth);
+
+    if (selectCurrent.getAttribute('data-value')) {
+      Object(_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(2021, startMonth, selectCurrent.getAttribute('data-value'));
+    } else {
+      Object(_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(2021, startMonth);
+    }
+  });
+  prev.addEventListener('click', function () {
+    if (startMonth <= 1) {
+      startMonth = 1;
+    } else {
+      startMonth--;
+    }
+
+    nameMonth(startMonth);
+
+    if (selectCurrent.getAttribute('data-value')) {
+      Object(_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(2021, startMonth, selectCurrent.getAttribute('data-value'));
+    } else {
+      Object(_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(2021, startMonth);
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/selectStyleAndFunctions.js":
+/*!***************************************************!*\
+  !*** ./src/js/modules/selectStyleAndFunctions.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return selectStyleAndFunctions; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _createCalendar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createCalendar */ "./src/js/modules/createCalendar.js");
+/* harmony import */ var _countTrips__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./countTrips */ "./src/js/modules/countTrips.js");
+
+
+
+function selectStyleAndFunctions(startYear) {
+  var selectHeader = document.querySelector('.select__header'),
+      selectBody = document.querySelector('.select__body'),
+      selectCurrent = document.querySelector('.select__current'),
+      selectItem = document.querySelectorAll('.select__item'),
+      titleCalendar = document.querySelector('.calendar__header');
+  selectHeader.addEventListener('click', function () {
+    selectBody.classList.toggle('select-active');
+  });
+  selectItem.forEach(function (item) {
+    item.addEventListener('click', function () {
+      var text = item.innerText,
+          currentText = item.closest('.select').querySelector('.select__current');
+      currentText.innerHTML = "\n                <img src=\"./icons/userImg.png\" alt=\"user-img\" class=\"select__user-img\">\n                ".concat(text, "\n            ");
+      selectBody.classList.remove('select-active');
+      selectCurrent.setAttribute('data-value', item.getAttribute('data-value'));
+      Object(_createCalendar__WEBPACK_IMPORTED_MODULE_1__["default"])(startYear, titleCalendar.getAttribute('data-month'), item.getAttribute('data-value')); // отрисовываем данные выбранного сотрудника
+
+      Object(_countTrips__WEBPACK_IMPORTED_MODULE_2__["default"])(item.getAttribute('data-value')); // отрисовываем счетчики поездок и дней коммандировок
+    });
+  });
 }
 
 /***/ }),
@@ -2538,16 +2806,22 @@ function createSelectValue(formSelector) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_createCalendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/createCalendar */ "./src/js/modules/createCalendar.js");
 /* harmony import */ var _modules_createSelectValue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/createSelectValue */ "./src/js/modules/createSelectValue.js");
-/* harmony import */ var _modules_changeSelectValue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/changeSelectValue */ "./src/js/modules/changeSelectValue.js");
+/* harmony import */ var _modules_selectStyleAndFunctions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/selectStyleAndFunctions */ "./src/js/modules/selectStyleAndFunctions.js");
+/* harmony import */ var _modules_nextPrevMonth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/nextPrevMonth */ "./src/js/modules/nextPrevMonth.js");
 
 
 
+
+var startMonth = 6,
+    startYear = 2021;
 window.addEventListener('DOMContentLoaded', function () {
-  Object(_modules_createSelectValue__WEBPACK_IMPORTED_MODULE_1__["default"])('.worker__select-form'); // создание селекта со списком сотрудников из базы данных
+  Object(_modules_createSelectValue__WEBPACK_IMPORTED_MODULE_1__["default"])('.select__body'); // создание селекта со списком сотрудников из базы данных
 
-  Object(_modules_changeSelectValue__WEBPACK_IMPORTED_MODULE_2__["default"])('#sel_id'); // выбор сотрудника и отрисовка календаря с его данными
+  Object(_modules_selectStyleAndFunctions__WEBPACK_IMPORTED_MODULE_2__["default"])(startYear); // выбор сотрудника и отрисовка календаря с его данными
 
-  Object(_modules_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(2021, 6); // создание изначального календаря, когда сотрудик не выбран
+  Object(_modules_createCalendar__WEBPACK_IMPORTED_MODULE_0__["default"])(startYear, startMonth); // создание изначального календаря, когда сотрудик не выбран
+
+  Object(_modules_nextPrevMonth__WEBPACK_IMPORTED_MODULE_3__["default"])('.next', '.prev', '.calendar__header', startMonth);
 });
 
 /***/ })

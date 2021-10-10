@@ -1,19 +1,18 @@
 import {workers} from '../db';
 
-export default function createSelectValue(formSelector) {
-    const form = document.querySelector(formSelector);
+export default function createSelectValue(selectSelector) {
+    const styledSelectBody = document.querySelector(selectSelector);
 
     let selectOptions = '';
 
     for (let key in workers) {
-        selectOptions += `<option value="${key}">${workers[key]}</option>`
+        selectOptions += `
+            <div class="select__item" data-value="${key}">
+                <img src="./icons/userImg.png" alt="user-img" class="select__user-img">
+                ${workers[key]}
+            </div>
+        `;
     }
 
-    const select = `
-        <select id="sel_id" name="sel_name" class="worker__select">
-            <option value=1>Select</option>
-            ${selectOptions}              
-        </select>
-    `
-    form.innerHTML = select;
+    styledSelectBody.innerHTML = selectOptions;
 }
