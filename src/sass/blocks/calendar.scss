@@ -1,10 +1,11 @@
 .calendar {
     width: 906px;
-    height: 654px;
+    min-height: 654px;
     background: #fff;
     border-radius: 7px;
     margin-top: 39px;
     position: relative;
+    padding-bottom: 67px;
     &__wrapper {
         padding-top: 19px;
         position: relative;
@@ -67,6 +68,7 @@ table {
     margin-right: 27px;
 }
 td, th {
+    position: relative;
     border: 1px solid #E9E9E9;
     padding: 7px;
     text-align: right;
@@ -91,7 +93,8 @@ th {
     color: #C0C3CC;
 }
 .dayOff {
-    width: 72px;
+    max-width: 105px;
+    min-width: 72px;
     height: 24px;
     background: #97B2C4;
     border-radius: 4px;
@@ -99,6 +102,8 @@ th {
     text-align: center;
     color: #FAFAFA;
     line-height: 22px;
-    margin-top: 36px;
-    margin-left: 46px;
+    position: absolute;
+    right: 9px;
+    bottom: 9px;
+    padding: 0 5px;
 }
